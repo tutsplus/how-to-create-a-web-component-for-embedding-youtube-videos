@@ -1,0 +1,24 @@
+{
+    "name": "youtube-web-component",
+    "version": "0.0.1",
+    "description": "",
+    "authors": [
+        "WebComponents.org",
+        "TutsPlus.com"
+    ],
+    "license": "MIT",
+    "main": "tmpl/youtube-embed.html",
+    "keywords": [
+        "web-components",
+        "youtube",
+        "embed",
+        "lazy-load"
+    ],
+    "ignore": [
+        "**/.*",
+        "bower_components"
+    ],
+    "dependencies": {
+        "webcomponentsjs": "^0.7.0"
+    }
+}
