@@ -1,73 +1,61 @@
 <!-- Defines element markup -->
 <template>
     <style>
-        div {
-            text-align: center;
-            font-family: Verdana, Geneva, sans-serif;
+        .youtube {
+        	background-color: #000;
+        	margin-bottom: 30px;
+        	position: relative;
+        	padding-top: 56.25%;
+        	overflow: hidden;
+        	cursor: pointer;
         }
-        .video {
-            background-color: #000;
-            margin-bottom: 30px;
-            position: relative;
-            cursor: pointer;
+        .youtube img {
+        	width: 100%;
+        	top: -16.82%;
+        	left: 0;
+        	opacity: 0.7;
         }
-        .video[data-ratio="16:9"] {
-            padding-top: 56.25%;
+        .youtube .play-button {
+        	width: 90px;
+        	height: 60px;
+        	background-color: #333;
+        	box-shadow: 0 0 30px rgba( 0,0,0,0.6 );
+        	z-index: 1;
+        	opacity: 0.8;
+        	border-radius: 6px;
         }
-        .video[data-ratio="3:2"] {
-            padding-top: 66.66%;
+        .youtube .play-button:before {
+        	content: "";
+        	border-style: solid;
+        	border-width: 15px 0 15px 26.0px;
+        	border-color: transparent transparent transparent #fff;
         }
-        .video img {
-            width: 100%;
-            top: 0;
-            left: 0;
-            opacity: 0.7;
+        .youtube img,
+        .youtube .play-button {
+        	cursor: pointer;
         }
-        .video .play-button {
-            width: 90px;
-            height: 60px;
-            background-color: #333;
-            box-shadow: 0 0 30px rgba( 0,0,0,0.6 );
-            z-index: 1;
-            opacity: 0.8;
-            border-radius: 6px;
+        .youtube img,
+        .youtube iframe,
+        .youtube .play-button,
+        .youtube .play-button:before {
+        	position: absolute;
         }
-        .video .play-button:before {
-            content: "";
-            border-style: solid;
-            border-width: 15px 0 15px 26.0px;
-            border-color: transparent transparent transparent #fff;
+        .youtube .play-button,
+        .youtube .play-button:before {
+        	top: 50%;
+        	left: 50%;
+        	transform: translate3d( -50%, -50%, 0 );
         }
-        .video img,
-        .video .play-button {
-            cursor: pointer;
-        }
-        .video img,
-        .video iframe,
-        .video .play-button,
-        .video .play-button:before {
-            position: absolute;
-        }
-        .video .play-button,
-        .video .play-button:before {
-            top: 50%;
-            left: 50%;
-            transform: translate3d( -50%, -50%, 0 );
-        }
-        .video iframe {
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-        }
-        .alert {
-            background-color: #e42313;
-            color: #fff;
-            padding: 15px 25px;
-            border-radius: 3px;
+        .youtube iframe {
+        	height: 100%;
+        	width: 100%;
+        	top: 0;
+        	left: 0;
         }
     </style>
-    <div class="video video--youtube" data-ratio="16:9" data-embed=""><div class="play-button"></div></div>
+    <div class="youtube">
+    	<div class="play-button"></div>
+    </div>
 </template>
 
 <script>
@@ -92,52 +80,33 @@
         var shadowRoot = this.createShadowRoot();
 
         // Adds a template clone into shadow root.
-        var clone = thatDoc.importNode(template, true);
-        shadowRoot.appendChild( clone );
+        var clone = thatDoc.importNode( template, true );
+        	shadowRoot.appendChild( clone );
 
-        this.video = shadowRoot.querySelector( ".video" );
-        this.ratio = this.getAttribute( "ratio" );
-        this.embed = this.getAttribute( "embed" );
+        var embed = this.getAttribute( "embed" );
+        var video = shadowRoot.querySelector( ".youtube" );
 
-        if ( this.embed ) {
-
-            this.video.setAttribute( "data-embed", this.embed );
-        } else {
-
-            this.video.removeAttribute( "data-embed" );
-            this.video.removeAttribute( "data-ratio" );
-
-            this.video.innerHTML = "Youtube video ID must be set in the 'embed' attribute.";
-            this.video.className = "alert";
-
-            return;
-        }
-
-        if ( this.ratio ) {
-            this.video.setAttribute( "data-ratio", this.ratio );
-        }
-
-        this.doTheThing();
+        this.doTheThing( embed, video );
     };
 
-    YoutubeProto.doTheThing = function() {
+    YoutubeProto.doTheThing = function( embedID, videoElem ) {
 
-        var source = "https://img.youtube.com/vi/"+ this.embed +"/maxresdefault.jpg";
-        var image  = new Image();
+		var source = "https://img.youtube.com/vi/"+ embedID +"/sddefault.jpg";
+		var image  = new Image();
 
         image.src = source;
 
         image.addEventListener( "load", function() {
-            this.video.appendChild( image );
-        }.bind( this ) );
+            videoElem.appendChild( image );
+        });
 
-        this.video.addEventListener( "click", function() {
+        videoElem.addEventListener( "click", function() {
 
             var iframe = document.createElement( "iframe" );
 
                 iframe.setAttribute( "frameborder", "0" );
                 iframe.setAttribute( "allowfullscreen", "" );
-                iframe.setAttribute( "src", "https://www.youtube.com/embed/"+ this.dataset.embed +"?rel=0&showinfo=0&autoplay=1" );
+                iframe.setAttribute( "src", "https://www.youtube.com/embed/"+ embedID +"?rel=0&showinfo=0&autoplay=1" );
 
                 this.innerHTML = "";
                 this.appendChild( iframe );
