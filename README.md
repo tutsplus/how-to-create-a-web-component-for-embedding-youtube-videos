@@ -7,4 +7,4 @@ If you followed the tutorial thoroughly, you’ll have seen that we had to add a
 
 Having to add all this each time is not the most convenient approach; what if we could replace all this by instead using an out-of-the-box element, like <youtube-embed> instead? That’s exactly what we are going to do in this tutorial; we are going to create a fully-functioning custom HTML element using “Web Components”.
 
-[View the demo](http://tutsplus.github.io/)
+[View the demo](http://tutsplus.github.io/how-to-create-a-web-component-for-embedding-youtube-videos/)
